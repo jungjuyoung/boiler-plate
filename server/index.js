@@ -23,7 +23,7 @@ mongoose
 
 // 최상위 라우터
 app.get('/', (req, res) => {
-  res.send('Hello World! 안녕하세요');
+  res.send('Hello World!!!');
 });
 
 // 회원가입 라우터
