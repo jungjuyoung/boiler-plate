@@ -30,5 +30,10 @@ const userSchema = mongoose.Schema({
   },
 });
 
+//userSchema.pre()는 mongoose에서 가져온 메소드
+// save기능을 하기 전에 무언가를 한다는것.
+userSchema.pre('save', function (next) {
+  next;
+});
 const User = mongoose.model('User', userSchema);
 module.exports = { User };

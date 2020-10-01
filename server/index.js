@@ -34,6 +34,7 @@ app.post('/api/users/register', (req, res) => {
   const user = new User(req.body);
 
   // user.save는 몽고DB에서 가져온 메소드. user.save하면 User모델에 client에서 보낸정보(req.body)가 저장된다.
+  // 그런데 비밀번호같은 경우 관리자도 볼수없게 bcrypt를 이용해 암호화한다.
   user.save((err, userInfo) => {
     if (err) return res.json({ success: false, err });
     return res.status(200).json({ success: true });
