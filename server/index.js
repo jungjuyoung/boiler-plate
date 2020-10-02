@@ -5,7 +5,6 @@ const mongoose = require('mongoose');
 const config = require('./config/key');
 const bodyParser = require('body-parser');
 const { User } = require('./models/User');
-
 //application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 //application/json
@@ -31,6 +30,7 @@ app.post('/api/users/register', (req, res) => {
   // 회원가입 할때 필요한 정보들을 client에서 가져오면
   // 그것들을 DB에 넣어준다
   // req.body안에는 json형식으로 bodyParser를 이용해서 client에서 보낸정보가 들어있다.
+  // User모델에 req.body를 넣어준다.
   const user = new User(req.body);
 
   // user.save는 몽고DB에서 가져온 메소드. user.save하면 User모델에 client에서 보낸정보(req.body)가 저장된다.
