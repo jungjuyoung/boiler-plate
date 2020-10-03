@@ -5,10 +5,13 @@ const mongoose = require('mongoose');
 const config = require('./config/key');
 const bodyParser = require('body-parser');
 const { User } = require('./models/User');
+const cookieParser = require('cookie-parser');
+
 //application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 //application/json
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 mongoose
   .connect(config.mongoURI, {
@@ -34,11 +37,46 @@ app.post('/api/users/register', (req, res) => {
   const user = new User(req.body);
 
   // user.save는 몽고DB에서 가져온 메소드. user.save하면 User모델에 client에서 보낸정보(req.body)가 저장된다.
-  // 그런데 비밀번호같은 경우 관리자도 볼수없게 bcrypt를 이용해 암호화한다.
+  // 그런데 비밀번호같은 경우 관리자도 볼수없게 bcrypt를 이용해 암호화한다. 비밀번호 암호화하기 -> User모델
   user.save((err, userInfo) => {
     if (err) return res.json({ success: false, err });
     return res.status(200).json({ success: true });
   });
+});
+
+app.post('/api/users/login', (req, res) => {
+  // 요청된 이메일이 DB에 있는지 찾는다.
+  User.findOne({ email: req.body.email }, (err, userInfo) => {
+    if (!userInfo) {
+      return res.json({
+        loginSuccess: false,
+        message: '제공된 이메일에 해당하는 유저가 없습니다.',
+      });
+    }
+  });
+
+  // 요청된 이메일이 DB에 있다면 비밀번호가 맞는 비밀번호인지 확인
+  // comparePassword란 메소드를 만들어서
+  userInfo.comparePassword(req.body.password, (err, isMatch) => {
+    // 매치되는게 없다면
+    if (!isMatch)
+      return res.json({
+        loginSuccess: false,
+        message: '비밀번호가 틀렸습니다.',
+      });
+    //매치되는게 있다면
+    userInfo.generateToken((err, user) => {
+      if (err) return res.status(400).send(err);
+      // 토큰을 저장한다. 어디에? 토큰은 여러군데 저장가능. cookie or 로컬스토리지 or 세션스토리지
+      // 이번에는 cookie에 저장
+      // 클라이언트 쿠키에 "x_auth"란 이름에 user.token값 저장
+      res
+        .cookie('x_auth', user.token)
+        .status(200)
+        .json({ loginSuccess: true, userId: user._id });
+    });
+  });
+  // 비밀번호까지 맞다면 그 User를 위한 token을 생성
 });
 
 app.listen(port, () => {
