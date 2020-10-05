@@ -45,6 +45,7 @@ app.post('/api/users/register', (req, res) => {
   });
 });
 
+// 로그인 라우터
 app.post('/api/users/login', (req, res) => {
   // 요청된 이메일이 DB에 있는지 찾는다.
   User.findOne({ email: req.body.email }, (err, userInfo) => {
@@ -82,7 +83,7 @@ app.post('/api/users/login', (req, res) => {
 });
 
 // auth 인증처리하는 라우트
-// role 0이면 일반유저, 0이 아니면 관리자
+// role 0 이면 일반유저, 0 이 아니면 관리자
 app.get('/api/users/auth', auth, (req, res) => {
   res.status(200).json({
     _id: req.user._id,
@@ -93,6 +94,15 @@ app.get('/api/users/auth', auth, (req, res) => {
     lastname: req.user.lastname,
     role: req.user.role,
     image: req.user.image,
+  });
+});
+
+// 로그아웃 라우터
+app.get('/api/users/logout', auth, (req, res) => {
+  //
+  User.findOneAndUpdate({ _id: req.user._id }, { token: '' }, (err, user) => {
+    if (err) return res.json({ success: false, err });
+    return res.status(200).send({ success: true });
   });
 });
 
