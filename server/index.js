@@ -29,6 +29,10 @@ app.get('/', (req, res) => {
   res.send('Hello World!!!');
 });
 
+app.get('http://localhost:/api/hello', (req, res) => {
+  res.send('안녕하세요');
+});
+
 // 회원가입 라우터
 app.post('/api/users/register', (req, res) => {
   // 회원가입 할때 필요한 정보들을 client에서 가져오면
