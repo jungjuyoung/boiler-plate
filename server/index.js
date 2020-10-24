@@ -29,7 +29,7 @@ app.get('/', (req, res) => {
   res.send('Hello World!!!');
 });
 
-app.get('http://localhost:/api/hello', (req, res) => {
+app.get('/api/hello', (req, res) => {
   res.send('안녕하세요');
 });
 
