@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/hello', (req, res) => {
-  res.send('안녕하세요');
+  res.send('안녕하세요 여기는 api/hello입니다');
 });
 
 // 회원가입 라우터
