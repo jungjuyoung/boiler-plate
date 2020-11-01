@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Axios from 'axios';
 
 function LoginPage() {
   const [Email, setEmail] = useState('');
@@ -14,6 +15,11 @@ function LoginPage() {
     e.preventDefault();
     console.log('Email', Email);
     console.log('Password', Password);
+    let body = {
+      email: Email,
+      password: Password,
+    };
+    Axios.post('/api/users/login', body).then(res);
   };
   return (
     <div
