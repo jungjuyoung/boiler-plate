@@ -4,7 +4,10 @@ import { useDispatch } from 'react-redux';
 import { loginUser } from '../../../_actions/user_action';
 
 function LoginPage(props) {
+  console.log(`props: ${props}`);
+
   const dispatch = useDispatch();
+
   const [Email, setEmail] = useState('');
   const [Password, setPassword] = useState('');
 
@@ -28,7 +31,7 @@ function LoginPage(props) {
 
     dispatch(loginUser(body)).then((res) => {
       if (res.payload.loginSuccess) {
-        props.history.push('/');
+        props.history.push('/'); // react에서 page이동을 props.history.push로 이동한다.
       } else {
         alert('Error');
       }
