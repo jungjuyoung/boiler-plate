@@ -31,7 +31,7 @@ function LoginPage(props) {
 
     dispatch(loginUser(body)).then((res) => {
       if (res.payload.loginSuccess) {
-        props.history.push('/'); // react에서 page이동을 props.history.push로 이동한다.
+        props.history.push('/'); // react에서 page이동을 props.history.push로 이동한다. 로그인 성공하면 루트페이지로 이동
       } else {
         alert('Error');
       }
