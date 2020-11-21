@@ -11,6 +11,7 @@ export function loginUser(dataTosubmit) {
     payload: request,
   };
 }
+
 export function registerUser(dataTosubmit) {
   const request = axios
     .post('/api/users/register', dataTosubmit)

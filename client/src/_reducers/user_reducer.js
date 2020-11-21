@@ -5,6 +5,7 @@ export default function (state = {}, action) {
     case LOGIN_USER:
       return { ...state, loginSuccess: action.payload };
       break;
+
     case REGISTER_USER:
       return { ...state, register: action.payload };
       break;
