@@ -29,9 +29,9 @@ app.get('/', (req, res) => {
   res.send('Hello World!!!');
 });
 
-app.get('/api/hello', (req, res) => {
-  res.send('안녕하세요 여기는 api/hello입니다');
-});
+// app.get('/api/hello', (req, res) => {
+//   res.send('안녕하세요 여기는 api/hello입니다');
+// });
 
 // 회원가입 라우터
 app.post('/api/users/register', (req, res) => {
@@ -103,7 +103,6 @@ app.get('/api/users/auth', auth, (req, res) => {
 
 // 로그아웃 라우터
 app.get('/api/users/logout', auth, (req, res) => {
-  //
   User.findOneAndUpdate({ _id: req.user._id }, { token: '' }, (err, user) => {
     if (err) return res.json({ success: false, err });
     return res.status(200).send({ success: true });
