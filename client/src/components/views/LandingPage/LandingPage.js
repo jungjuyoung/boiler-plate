@@ -1,19 +1,11 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
 
-function LandingPage(props) {
+function LandingPage() {
   useEffect(() => {
     axios.get('/api/hello').then((res) => console.log(res.data));
   }, []);
-  const onClickHandler = () => {
-    axios.get('/api/users/logout').then((res) => {
-      if (res.data.success) {
-        props.history.push('/login');
-      } else {
-        alert('로그아웃 실패');
-      }
-    });
-  };
+
   return (
     <div
       style={{
@@ -25,7 +17,6 @@ function LandingPage(props) {
       }}
     >
       <h1>시작 페이지</h1>
-      <button onClick={onClickHandler}>로그아웃</button>
     </div>
   );
 }
