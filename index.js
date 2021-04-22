@@ -50,29 +50,27 @@ app.post('/api/users/login', (req, res) => {
     if (!user)
       return res.json({
         loginSuccess: false,
-        message: '제공된 이메일에 해당하는 유저가 없습니다.',
+        message: 'Auth failed, email not found',
       });
-    console.log(`@@ USER.findOne user: ${user}`);
 
     // 요청된 이메일이 데이터베이스에 있다면 비밀번호가 맞는 비밀번호인지 확인한다.
     user.comparePassword(req.body.password, (err, isMatch) => {
-      if (!isMatch)
-        return res.json({
-          loginSuccess: false,
-          message: '비밀번호가 틀렸습니다.',
-        });
       console.log(
-        `@@@:userInfo.comparePassword  ${userInfo}, isMatch: ${isMatch}`
+        `user.compaerPassword req.body.password: ${req.body.password}, isMatch: ${isMatch}`
       );
+
+      if (!isMatch)
+        return res.json({ loginSuccess: false, message: 'Wrong password' });
 
       // 비밀번호까지 맞다면 토큰을 생성해서 부여함.
       user.generateToken((err, user) => {
         if (err) return res.status(400).send(err);
         // 토큰을 저장한다. 어디에? 쿠키 or 로컬스토리지 or 세션스토리지... 일단은 쿠키에
-        res
-          .cookie('x_auth', user.token)
-          .status(200)
-          .json({ loginSuccess: true, userID: user._id });
+        // res.cookie('x_authExp', user.tokenExp);
+        res.cookie('x_auth', user.token).status(200).json({
+          loginSuccess: true,
+          userId: user._id,
+        });
       });
     });
   });
@@ -90,5 +88,12 @@ app.get('/api/users/auth', auth, (req, res) => {
     lastname: req.user.lastname,
     role: req.user.role,
     image: req.user.image,
+  });
+});
+
+app.get('/api/users/logout', auth, (req, res) => {
+  User.findOneAndUpdate({ _id: req.user._id }, { token: '' }, (err, user) => {
+    if (err) return res.json({ success: false, err });
+    return res.status(200).send({ success: true });
   });
 });
