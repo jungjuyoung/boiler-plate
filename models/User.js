@@ -63,14 +63,15 @@ userSchema.methods.comparePassword = function (plainPassword, cb) {
     cb(null, isMatch);
   });
 };
+
 userSchema.methods.generateToken = function (cb) {
   let user = this;
   // jsonwebtoken을 이용해서 token을 생성하기
-  let token = jwt.sign(user._id.toHexString(), 'secret');
+  // jwt.sign에서 plainPassword를 원함 user._id.toHexString()으로 plainPassword로 만들어줌
+  // user._id 와 + 문자열'secretToken'을 더해서 = token 을 생성
+  const token = jwt.sign(user._id.toHexString(), 'secretToken');
   // let oneHour = moment().add(1, 'hour').valueOf();
 
-  // user._id 와 + 문자열'secretToken'을 더해서 = token 을 생성
-  // jwt.sign에서 plainPassword를 원함 user._id.toHexString()으로 plainPassword로 만들어줌
   // user.tokenExp = oneHour;
   user.token = token;
   user.save(function (err, user) {
@@ -78,11 +79,12 @@ userSchema.methods.generateToken = function (cb) {
     cb(null, user);
   });
 };
+
 userSchema.statics.findByToken = function (token, cb) {
-  var user = this;
+  const user = this;
   // token을 decoded한다.
 
-  jwt.verify(token, 'secret', function (err, decode) {
+  jwt.verify(token, 'secretToken', function (err, decode) {
     // 유저 아이디를 이용해서 유저를 찾은 담음에
     // 클라이언트에서 가져온 token과 DB에 보관된 토큰이 일치하는지 확인
     user.findOne({ _id: decode, token: token }, function (err, user) {
