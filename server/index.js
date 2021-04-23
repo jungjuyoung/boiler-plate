@@ -50,7 +50,7 @@ app.post('/api/users/login', (req, res) => {
     if (!user)
       return res.json({
         loginSuccess: false,
-        message: 'Auth failed, email not found',
+        message: '유효하지 않은 이메일 입니다.',
       });
 
     // 요청된 이메일이 데이터베이스에 있다면 비밀번호가 맞는 비밀번호인지 확인한다.
@@ -96,4 +96,8 @@ app.get('/api/users/logout', auth, (req, res) => {
     if (err) return res.json({ success: false, err });
     return res.status(200).send({ success: true });
   });
+});
+
+app.get('/api/hello', (req, res) => {
+  res.send('HI~~~');
 });
