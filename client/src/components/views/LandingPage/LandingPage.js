@@ -1,10 +1,21 @@
 import React from 'react';
-
-function LandingPage() {
+import axios from 'axios';
+function LandingPage(props) {
+  const onClickHandler = (e) => {
+    axios.get('/api/users/logout').then((res) => {
+      console.log(res.data);
+      if (res.data.success) {
+        props.history.push('/login');
+      } else {
+        alert('로그아웃 실패');
+      }
+    });
+  };
   return (
     <div
       style={{
         display: 'flex',
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%',
@@ -12,6 +23,7 @@ function LandingPage() {
       }}
     >
       <h1>시작 페이지</h1>
+      <button onClick={onClickHandler}>Logout</button>
     </div>
   );
 }
