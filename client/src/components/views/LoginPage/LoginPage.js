@@ -8,6 +8,7 @@ function LoginPage(props) {
   const [Password, setPassword] = useState('');
 
   const onEmailHandler = (e) => {
+    console.log(`e: ${e.currentTarget.value}`);
     setEmail(e.currentTarget.value);
   };
   const onPasswordHandler = (e) => {
@@ -24,13 +25,15 @@ function LoginPage(props) {
     };
 
     dispatch(loginUser(body)).then((res) => {
+      console.log(`dispatch res: ${JSON.stringify(res.payload)}`);
       if (res.payload.loginSuccess) {
         props.history.push('/');
       } else {
         alert('Error!!!');
       }
     });
-    // axios.post('/api/users/login', body).then(res);
+    // 원래는 여기서 axios.post('/api/users/login', body).then(res)로
+    // 서버에 전달해야 하는데 리덕스를 사용하기때문에 dispatch로 대체
   };
 
   return (
