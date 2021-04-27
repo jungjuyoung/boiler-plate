@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import LadingPage from './components/views/LandingPage/LandingPage';
-import Loginpage from './components/views/LoginPage/LoginPage';
-import Register from './components/views/Registerpage/Registerpage';
+import LoginPage from './components/views/LoginPage/LoginPage';
+import RegisterPage from './components/views/Registerpage/Registerpage';
 export default function App() {
   return (
     <Router>
@@ -11,8 +11,8 @@ export default function App() {
             renders the first one that matches the current URL. */}
         <Switch>
           <Route exact path="/" component={LadingPage} />
-          <Route exact path="/login" component={Loginpage} />
-          <Route exact path="/register" component={Register} />
+          <Route exact path="/login" component={LoginPage} />
+          <Route exact path="/register" component={RegisterPage} />
         </Switch>
       </div>
     </Router>
