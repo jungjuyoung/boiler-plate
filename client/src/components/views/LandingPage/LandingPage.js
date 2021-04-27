@@ -7,7 +7,7 @@ function LandingPage(props) {
       if (res.data.success) {
         props.history.push('/login');
       } else {
-        alert('로그아웃 실패');
+        alert('failed logout... ');
       }
     });
   };
