@@ -1,9 +1,10 @@
 import React from 'react';
 import axios from 'axios';
+import { withRouter } from 'react-router-dom';
 function LandingPage(props) {
   const onClickHandler = (e) => {
     axios.get('/api/users/logout').then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
       if (res.data.success) {
         props.history.push('/login');
       } else {
@@ -28,4 +29,4 @@ function LandingPage(props) {
   );
 }
 
-export default LandingPage;
+export default withRouter(LandingPage);
